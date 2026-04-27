@@ -1,3 +1,17 @@
+# 1. Name:
+#      Jackson Edwards
+# 2. Assignment Name:
+#      Lab 01: Tic-Tac-Toe
+# 3. Assignment Description:
+#      Write a program that can run a game of Tic-Tac-Toe, save and load a game file, 
+#      and display a winner when a condition is met.
+# 4. What was the hardest part? Be as specific as possible.
+#      The hardest part for me was getting the win conditions to work properly. I finally
+#      created a For loop containing a switch case that would run through each space on the 
+#      board that a win condition could originate from and that solved my problem.
+# 5. How long did it take for you to complete the assignment?
+#      2.5 hours
+
 import json
 
 def save_game_to_json(game_board, round_number):
@@ -46,7 +60,7 @@ def get_user_input(game_board, round_number):
 
             accepted = True
 
-        elif 0 > int(user_choice) > 9:
+        elif 0 >= int(user_choice) or int(user_choice) > 9:
 
             print("Please enter a valid number (1-9)")
 
@@ -138,7 +152,7 @@ where the following numbers correspond to the locations on the grid:
                     print("X is the Winner!")
                 else:
                     print("O is the Winner!")
-                    
+
                 display_gameboard(game_board)
             
             round_number += 1
