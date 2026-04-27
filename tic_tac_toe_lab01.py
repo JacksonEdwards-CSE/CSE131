@@ -160,4 +160,5 @@ where the following numbers correspond to the locations on the grid:
                                ' ',' ',' ',
                                ' ',' ',' ',], 0)
 
-main()
+if __name__ == "__main__":
+    main()
