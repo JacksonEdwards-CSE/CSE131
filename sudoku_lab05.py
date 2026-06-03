@@ -17,13 +17,17 @@ def clear_console():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 def read_file(filename):
+    try:
+    
+        with open(filename, "rt") as file:
+            json_data = file.read()
 
-    with open(filename, "rt") as file:
-        json_data = file.read()
+            dictionary_data = json.loads(json_data)
+    except (FileExistsError, FileNotFoundError):
+        print("File could not be found, please enter a valid file name.\n")
+        return [], False
 
-        dictionary_data = json.loads(json_data)
-
-    return dictionary_data["board"]
+    return dictionary_data["board"], True
 
 def save_file(filename, board):
     try:
@@ -100,11 +104,46 @@ def check_square_availability(row, column, board):
     else:
         return False
 
+def get_hint(row, column, board):
+
+    taken_numbers = []
+
+    for number in board[row]:
+        if number != 0:
+            taken_numbers.append(number)
+    
+    for i in range(9):
+        if board[i][column] != 0 and board[i][column] not in taken_numbers:
+            taken_numbers.append(board[i][column])
+
+    box_left_column = column - (column % 3)
+
+    box_top_row = row - (row % 3)
+
+    for r in range(box_top_row, box_top_row + 3):
+
+        for c in range(box_left_column, box_left_column + 3):
+
+            if board[r][c] != 0 and board[r][c] not in taken_numbers:
+                taken_numbers.append(board[r][c])
+
+    taken_numbers.sort()
+    possible_numbers = [1,2,3,4,5,6,7,8,9]
+    hint = [1,2,3,4,5,6,7,8,9]
+
+    for possibility in possible_numbers:
+        
+        if possibility in taken_numbers:
+            
+            hint.pop(hint.index(possibility))
+
+    return hint
+
 def check_user_number(row, column, number, board):
 
     #Checking if number is in 1-9:
 
-    if 0 > number or number > 9:
+    if 0 >= number or number > 9:
         print("Invalid Number\n")
 
         return False
@@ -151,10 +190,16 @@ def check_win(board):
     return True
 
 def main():
-    
-    filename = input("Please enter a filename: ")
 
-    board = read_file(filename)
+    valid_file = False
+
+    while not valid_file: 
+        filename = input("Please enter a filename: ")
+
+        if filename == 'q':
+            return
+
+        board, valid_file = read_file(filename)
 
     play_number = 0
     i = 1
@@ -184,12 +229,20 @@ def main():
         valid_number = False
 
         while not valid_number:  
-            number = int(input(f"What number goes in {square}? "))
+            number_input = input(f"What number goes in {square.upper()}?(Or enter \"S\" for a hint) ").lower()
 
-            if square == "q":
+            if number_input == "q":
                 return
             
+            elif number_input == "s":
+
+                hint = get_hint(row, column, board)
+
+                print(f"The possible numbers for {square.upper()} are: {hint}")
+            
             else:
+
+                number = int(number_input)
                 valid_number = check_user_number(row, column, number, board)
         
         edit_board(row, column, number, board)
