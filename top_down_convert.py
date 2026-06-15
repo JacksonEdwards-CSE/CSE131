@@ -1,7 +1,19 @@
 
 def get_number():
+
+    number = -1
     
-    return 1234
+    while number < 0:
+        try:
+            
+            number = int(input("what is the decimal number? "))
+
+        except ValueError:
+            
+            number = -1
+            
+
+    return number
 
 def convert_to_binary(number):
     '''Convert the passed in decimal to a binary number.
@@ -65,8 +77,9 @@ def main():
 
     test_runner()
 
-    print(get_number())
     number = get_number()
+
+    return
 
     bin, oct, hex = convert(number)
 
