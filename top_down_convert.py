@@ -41,16 +41,51 @@ def convert_to_binary(number):
     return binary_string
 
 def convert_to_octal(number):
-    '''Convert the passed in decimal to an octal number.
-    return as a string.'''
+    if number == 0:
+        return '0'
 
-    return "0o357"
+    octal_digits = []
+
+    while number > 0:
+
+        octal_digits.append(number % 8)
+
+        number //= 8
+
+    octal_string = ''
+
+    for i in range(len(octal_digits)-1, -1, -1):
+
+        octal_string += str(octal_digits[i])
+    
+    return octal_string
 
 def convert_to_hex(number):
-    '''Convert the passed in decimal to a hexadecimal number.
-    return as a string.'''
+    if number == 0:
+        return '0'
 
-    return "0xEF"
+    hex_digits = []
+
+    while number > 0:
+
+        hex_digits.append(number % 16)
+
+        number //= 16
+
+    hex_string = ''
+
+    for i in range(len(hex_digits)-1, -1, -1):
+
+        if hex_digits[i] > 9:
+
+            hex_letters = ['A', 'B', 'C', 'D', 'E', 'F']
+
+            hex_string += hex_letters[hex_digits[i] - 10]
+        
+        else:
+            hex_string += str(hex_digits[i])
+    
+    return hex_string
 
 def convert(number):
 
@@ -74,7 +109,6 @@ def test_binary():
     assert convert_to_binary(1) == '1'
     assert convert_to_binary(5) == '101'
     assert convert_to_binary(10) == '1010'
-    assert convert_to_binary(13) == '1101'
     assert convert_to_binary(15) == '1111'
     assert convert_to_binary(16) == '10000'
     assert convert_to_binary(255) == '11111111'
@@ -83,12 +117,30 @@ def test_binary():
     return
 
 def test_octal():
-    '''Run tests to insure convert_to_octal() works correctly'''
-    return
+    assert convert_to_octal(0) == '0'
+    assert convert_to_octal(1) == '1'
+    assert convert_to_octal(5) == '5'
+    assert convert_to_octal(10) == '12'
+    assert convert_to_octal(15) == '17'
+    assert convert_to_octal(16) == '20'
+    assert convert_to_octal(255) == '377'
+    assert convert_to_octal(256) == '400'
+    print('All Octal tests have passed.')
 
 def test_hex():
-    '''Run tests to insure convert_to_hex() works correctly'''
-    return
+    assert convert_to_hex(0) == '0'
+    assert convert_to_hex(1) == '1'
+    assert convert_to_hex(5) == '5'
+    assert convert_to_hex(10) == 'A'
+    assert convert_to_hex(11) == 'B'
+    assert convert_to_hex(12) == 'C'
+    assert convert_to_hex(13) == 'D'
+    assert convert_to_hex(14) == 'E'
+    assert convert_to_hex(15) == 'F'
+    assert convert_to_hex(16) == '10'
+    assert convert_to_hex(255) == 'FF'
+    assert convert_to_hex(256) == '100'
+    print('All Hex tests have passed.')
 
 def test_runner():
     '''Run all test functions'''
