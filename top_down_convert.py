@@ -4,11 +4,15 @@ def get_number():
     number = -1
     
     while number < 0:
+
         try:
             
             number = int(input("what is the decimal number? "))
+            print()
 
         except ValueError:
+
+            print("\nPlease enter a positive integer number.\n")
             
             number = -1
             
@@ -16,10 +20,25 @@ def get_number():
     return number
 
 def convert_to_binary(number):
-    '''Convert the passed in decimal to a binary number.
-    return as a string.'''
+
+    if number == 0:
+        return '0'
+
+    binary_digits = []
+
+    while number > 0:
+
+        binary_digits.append(number % 2)
+
+        number //= 2
+
+    binary_string = ''
+
+    for i in range(len(binary_digits)-1, -1, -1):
+
+        binary_string += str(binary_digits[i])
     
-    return "101101"
+    return binary_string
 
 def convert_to_octal(number):
     '''Convert the passed in decimal to an octal number.
@@ -51,7 +70,16 @@ def display_numbers(user_number, binary_number, octal_number, hex_number):
     print(f"Decimal: {user_number}, Binary: {binary_number}, Octal: {octal_number}, Hexadecimal: {hex_number}")
 
 def test_binary():
-    '''Run tests to insure convert_to_binary() works correctly'''
+    assert convert_to_binary(0) == '0'
+    assert convert_to_binary(1) == '1'
+    assert convert_to_binary(5) == '101'
+    assert convert_to_binary(10) == '1010'
+    assert convert_to_binary(13) == '1101'
+    assert convert_to_binary(15) == '1111'
+    assert convert_to_binary(16) == '10000'
+    assert convert_to_binary(255) == '11111111'
+    assert convert_to_binary(256) == '100000000'
+    print('All Binary tests have passed.')
     return
 
 def test_octal():
@@ -78,8 +106,6 @@ def main():
     test_runner()
 
     number = get_number()
-
-    return
 
     bin, oct, hex = convert(number)
 
