@@ -1,0 +1,92 @@
+# 1. Name:
+#      Jackson Edwards
+# 2. Assignment Name:
+#      Lab 13 : Segregation Sort Program
+# 3. Assignment Description:
+#      Use a particular sorting algorithm to sort various lists
+# 4. What was the hardest part? Be as specific as possible.
+#      Getting recursion to work properly. I had messed up in my pseudocode with the way I was sending the list through
+#      and I needed to rework it for the program.
+# 5. How long did it take for you to complete the assignment?
+#      2 hours
+
+# import math
+
+def sort_function(start_index, end_index, data_list):
+
+    if start_index >= end_index:
+        return data_list
+
+    pivot_index = (start_index + end_index) // 2
+    pivot_value = data_list[pivot_index]
+
+    left_index = start_index
+    right_index = end_index
+
+    while True:
+
+        while left_index <= right_index and data_list[left_index] <= pivot_value:
+            left_index += 1
+
+        while left_index <= right_index and data_list[right_index] >= pivot_value:
+            right_index -= 1
+
+        if left_index >= right_index:
+
+            pivot_value = data_list.pop(pivot_index)
+
+            if right_index >= pivot_index:
+                right_index -= 1
+
+            if right_index < start_index:
+                data_list.insert(start_index, pivot_value)
+                pivot_index = start_index
+
+            elif pivot_value < data_list[right_index]:
+                data_list.insert(right_index, pivot_value)
+                pivot_index = right_index
+
+            else:
+                data_list.insert(right_index + 1, pivot_value)
+                pivot_index = right_index + 1
+            break
+
+        data_list[left_index], data_list[right_index] = (
+            data_list[right_index],
+            data_list[left_index]
+        )
+
+        left_index += 1
+        right_index -= 1
+
+    sort_function(start_index, pivot_index - 1, data_list)
+    sort_function(pivot_index + 1, end_index, data_list)
+
+    return data_list
+
+
+def test_driver():
+
+    test_lists = [[1], [1,2,3,4,5], [9,1], [2,3,1,5,4], [3,8,5,9,6,4,1,7,2,10], [1,6,4,7,5,6,8,1], ["b","k","a","t","g","e","h","g","s"], [], [3,"apple",1]]
+
+    for test in test_lists:
+
+        print(f"{test}")
+
+        try:
+            sorted_list = sort_function(0, len(test) - 1, test)
+
+            print(sorted_list)
+
+        except TypeError:
+            print("Error")
+
+        input()
+
+
+def main():
+    test_driver()
+
+
+if __name__ == "__main__":
+    main()
